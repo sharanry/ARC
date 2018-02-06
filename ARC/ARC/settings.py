@@ -126,3 +126,6 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+
+TIME_INPUT_FORMATS = ['%I:%M:%S %p',]
+DATE_INPUT_FORMATS = ('%d/%m/%Y','%Y/%m/%d')

@@ -19,5 +19,6 @@ from main import views
 
 urlpatterns = [
     path('', admin.site.urls),
-    path('export/csv/$', views.export_users_csv)
+    path('export/csv/', views.export_users_csv),
+    path('export/xls/', views.export)
 ]
