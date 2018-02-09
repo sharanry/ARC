@@ -7,21 +7,21 @@ class Student(models.Model):
     """
     from GTA
     """
-    emplid = models.CharField(max_length=11, primary_key=True, blank=True)
-    campus_id = models.CharField(max_length=13, null=True)
-    name = models.CharField(max_length=100, null=True)
-    year = models.CharField(max_length=4, null=True)
-    disc = models.CharField(max_length=4, null=True)
+    id = models.CharField(max_length=11, primary_key=True, blank=True)
+    CAMPUS_ID = models.CharField(max_length=13, null=True)
+    NAME = models.CharField(max_length=100, null=True)
+    YEAR = models.CharField(max_length=4, null=True)
+    DISC = models.CharField(max_length=4, null=True)
 
     def __str__(self):
-        return "%s %s" % (self.campus_id, self.name)
+        return "%s %s" % (self.CAMPUS_ID, self.NAME)
 # from "CDC File"
 
 
 class CDC(models.Model):
     """ from "CDC File" """
     # Course ID in CourseTT
-    comp_codes = models.CharField(max_length=5, primary_key=True)
+    COMP_CODES = models.CharField(max_length=5, primary_key=True)
     course_code = models.CharField(max_length=10)
     tag = models.CharField(max_length=5, )
     course_name = models.CharField(max_length=30)
