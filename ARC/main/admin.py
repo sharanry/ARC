@@ -16,19 +16,19 @@ class StudentAdmin(ImportExportModelAdmin):
 
 
 @admin.register(CDC)
-class StudentAdmin(ImportExportModelAdmin):
+class CDCAdmin(ImportExportModelAdmin):
     resource_class = CDCResource
-    search_fields = ['course_code']
+    search_fields = ['comp_codes', 'course_code']
 
 
 @admin.register(CourseSlot)
-class StudentAdmin(ImportExportModelAdmin):
+class CourseSlotAdmin(ImportExportModelAdmin):
     resource_class = CourseSlotResource
     search_fields = ['subject']
 
 # admin.site.register(Student, StudentAdmin)
 
 
-admin.site.site_header = "Academic Research Division"
+admin.site.site_header = "Academic Registration & Counselling Division"
 
-admin.site.site_title = "Academic Research Division"
+admin.site.site_title = "Academic Registration & Counselling Division"

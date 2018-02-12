@@ -21,7 +21,7 @@ class Student(models.Model):
 class CDC(models.Model):
     """ from "CDC File" """
     # Course ID in CourseTT
-    COMP_CODES = models.CharField(max_length=5, primary_key=True)
+    comp_codes = models.CharField(max_length=5, primary_key=True, blank=True)
     course_code = models.CharField(max_length=10)
     tag = models.CharField(max_length=5, )
     course_name = models.CharField(max_length=30)
@@ -30,7 +30,7 @@ class CDC(models.Model):
     sem = models.CharField(max_length=1, null=True)
 
     def __str__(self):
-        return "%s %s" % (self.course_code, self.course_name)
+        return "%s %s %s" % (self.comp_codes, self.course_code, self.course_name)
 
 
 class CourseSlot(models.Model):
@@ -45,7 +45,7 @@ class CourseSlot(models.Model):
     course = models.ForeignKey(CDC, on_delete=models.PROTECT, null=True)
     subject = models.CharField(max_length=5, null=True)
     # catalog = models.CharField(max_length=4, )
-    class_nbr = models.CharField(max_length=4, unique=True, null=True)
+    class_nbr = models.CharField(max_length=4, primary_key=True, blank=True)
     section = models.CharField(max_length=2, null=True)
     room = models.CharField(max_length=10, null=True)
 
@@ -67,3 +67,8 @@ class CourseSlot(models.Model):
 
     # days = models.CharField(max_length=10, choices=DAYS)
     # time_slot = models.CahrField()
+    def __str__(self):
+        if self.course:
+            return "%s %s %s " % (self.class_nbr, self.course.course_code, self.course.course_name)
+        else:
+            return "%s " % (self.class_nbr)
