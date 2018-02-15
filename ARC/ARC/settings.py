@@ -41,6 +41,8 @@ INSTALLED_APPS = [
 
     'main',
     'import_export',
+    'django_admin_listfilter_dropdown',
+    
 ]
 
 MIDDLEWARE = [

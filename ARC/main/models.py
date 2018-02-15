@@ -41,13 +41,9 @@ class CourseSlot(models.Model):
     # catalog = models.CharField(max_length=4, )
     class_nbr = models.CharField(max_length=4, primary_key=True, blank=True)
     section = models.CharField(max_length=2, null=True)
-   
-    def __str__(self):
 
-        if self.CDC != None:
-            return "%s %s %s " % (self.class_nbr, self.CDC.course_code, self.course.course_name)
-        else:
-            return "%s %s" % (self.course_id, self.class_nbr)
+    def __str__(self):
+        return "%s %s" % (self.course_id, self.class_nbr)
 
      # room = models.CharField(max_length=10, null=True)
 
@@ -69,3 +65,16 @@ class CourseSlot(models.Model):
 
     # days = models.CharField(max_length=10, choices=DAYS)
     # time_slot = models.CahrField()
+
+class Output(models.Model):
+    EMPLID = models.CharField(max_length=11, primary_key=True, blank=True)
+    CAMPUS_ID = models.CharField(max_length=13, null=True)
+    CRSE_ID = models.IntegerField(null=True)
+    SUBJECT = models.CharField(max_length=6, null=True)
+    CATALOG_NBR = models.CharField(max_length=4, null=True)
+    DESCR = models.CharField(max_length=20, null=True)
+    CLASS_NBR = models.IntegerField(null=True)
+    CLASS_SECTION = models.CharField(max_length=5, null=True)
+
+    def __str__(self):
+        return "%s %s %s %s" % (self.EMPLID, self.CAMPUS_ID, self.DESCR, self.CLASS_SECTION)
