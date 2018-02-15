@@ -28,6 +28,7 @@ class TimeWidget(Widget):
 
     def clean(self, value, row=None, *args, **kwargs):
         if not value:
+            print("bad")
             return None
         for format in self.formats:
             print(format)
@@ -43,8 +44,9 @@ class TimeWidget(Widget):
                     value = "%02d:%02d:%02d AM" % (hour, minutes, seconds)
                 else:
                     value = "%02d:%02d:%02d PM" % (hour - 12, minutes, seconds)
-
-                return datetime.strptime(value, format).time()
+                out = datetime.strptime(value, format).time()
+                print(out)
+                return out
             except (ValueError, TypeError):
                 print("2")
                 continue
@@ -97,13 +99,22 @@ class CompCodesWidget(ForeignKeyWidget):
     def __init__(self, model, field='pk', *args, **kwargs):
         super(CompCodesWidget, self).__init__(model, field, *args, **kwargs)
 
+    def get_queryset(self, value, row):
+        return self.model.objects.filter(
+            first_name__iexact=row["course_id"][1:]
+            # last_name__iexact=row["last_name"]
+        )
+
     def clean(self, value, row=None, *args, **kwargs):
         val = super(ForeignKeyWidget, self).clean(value)
-        print(val[1:])
         if val:
             try:
-                return self.get_queryset(value, row, *args, **kwargs).get(**{self.field: val[1:]})
+                out = self.get_queryset(value, row, *args, **kwargs)#.get(course_id__exact=val[1:])
+                print(out)
+                return out
             except: 
+                # print("NA")
                 return None
         else:
-            return None
+            raise ValueError("Enter a valid course_id.")
+            

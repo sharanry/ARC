@@ -34,41 +34,38 @@ class CDC(models.Model):
 
 
 class CourseSlot(models.Model):
-    # DAYS = {
-    #     ('M', 'Monday'),
-    #     ('Tu', 'Tuesday'),
-    #     ('W', 'Wednesday'),
-    #     ('Th', 'Thursday'),
-    #     ('F', 'Friday'),
-    #     ('S', 'Saturday')
-    # }
-    course = models.ForeignKey(CDC, on_delete=models.PROTECT, null=True)
-    subject = models.CharField(max_length=5, null=True)
+    
+    # CDC = models.ForeignKey(CDC, on_delete=models.PROTECT, null=True)
+    course_id = models.CharField(max_length=6, blank=True)
+    # subject = models.CharField(max_length=5, null=True)
     # catalog = models.CharField(max_length=4, )
     class_nbr = models.CharField(max_length=4, primary_key=True, blank=True)
     section = models.CharField(max_length=2, null=True)
-    room = models.CharField(max_length=10, null=True)
+   
+    def __str__(self):
+
+        if self.CDC != None:
+            return "%s %s %s " % (self.class_nbr, self.CDC.course_code, self.course.course_name)
+        else:
+            return "%s %s" % (self.course_id, self.class_nbr)
+
+     # room = models.CharField(max_length=10, null=True)
 
     # Class Pattern
-    class_pattern = models.CharField(max_length=4, null=True)
+    # class_pattern = models.CharField(max_length=4, null=True)
     # TODO: Make more robust
 
-    mtg_start = models.TimeField(null=True)
-    end_time = models.TimeField(null=True)
+    # mtg_start = models.TimeField(null=True)
+    # end_time = models.TimeField(null=True)
 
-    instructor_ID = models.CharField(max_length=20, null=True)
-    instructor_name = models.CharField(max_length=30, null=True)
-    instructor_role = models.CharField(max_length=2, null=True)
+    # instructor_ID = models.CharField(max_length=20, null=True)
+    # instructor_name = models.CharField(max_length=30, null=True)
+    # instructor_role = models.CharField(max_length=2, null=True)
 
-    exam_tm_cd = models.CharField(max_length=5, null=True)
-    exam_date = models.DateField(null=True)
+    # exam_tm_cd = models.CharField(max_length=5, null=True)
+    # exam_date = models.DateField(null=True)
 
-    course_admin = models.CharField(max_length=5, null=True)
+    # course_admin = models.CharField(max_length=5, null=True)
 
     # days = models.CharField(max_length=10, choices=DAYS)
     # time_slot = models.CahrField()
-    def __str__(self):
-        if self.course:
-            return "%s %s %s " % (self.class_nbr, self.course.course_code, self.course.course_name)
-        else:
-            return "%s " % (self.class_nbr)

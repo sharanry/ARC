@@ -24,7 +24,7 @@ class CDCAdmin(ImportExportModelAdmin):
 @admin.register(CourseSlot)
 class CourseSlotAdmin(ImportExportModelAdmin):
     resource_class = CourseSlotResource
-    search_fields = ['subject']
+    search_fields = ['class_nbr', 'course']
 
 # admin.site.register(Student, StudentAdmin)
 
