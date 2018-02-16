@@ -26,12 +26,12 @@ class CDCAdmin(ImportExportModelAdmin):
 @admin.register(CourseSlot)
 class CourseSlotAdmin(ImportExportModelAdmin):
     resource_class = CourseSlotResource
-    search_fields = ['class_nbr', 'course']
+    search_fields = ['class_nbr', 'course_id']
 
 @admin.register(Output)
 class OutputAdmin(ImportExportModelAdmin):
-    # resource_class = OutputResource
-    search_fields = ['class_nbr', 'course']
+    resource_class = OutputResource
+    search_fields = ['CAMPUS_ID', 'CATALOG_NBR', 'CLASS_NBR', 'CLASS_SECTION', 'CRSE_ID', 'DESCR', 'EMPLID', 'SUBJECT']
 
 
 admin.site.site_header = "Academic Registration & Counselling Division"

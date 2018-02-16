@@ -67,7 +67,7 @@ class CourseSlot(models.Model):
     # time_slot = models.CahrField()
 
 class Output(models.Model):
-    EMPLID = models.CharField(max_length=11, primary_key=True, blank=True)
+    EMPLID = models.CharField(max_length=11, blank=True)
     CAMPUS_ID = models.CharField(max_length=13, null=True)
     CRSE_ID = models.IntegerField(null=True)
     SUBJECT = models.CharField(max_length=6, null=True)

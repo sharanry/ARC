@@ -1,6 +1,6 @@
 from import_export import resources, fields
 from import_export.widgets import ForeignKeyWidget
-from .models import Student, CDC, CourseSlot
+from .models import Student, CDC, CourseSlot, Output
 
 
 from .utils import TimeWidget, DateWidget, CompCodesWidget
@@ -31,6 +31,20 @@ class CDCResource(resources.ModelResource):
         ]
         exclude = ('id', )
 
+class OutputResource(resources.ModelResource):
+    class Meta:
+        model = Output
+        # import_id_fields = ['comp_codes']
+        # fields = [
+        #     'comp_codes',
+        #     'course_code',
+        #     'tag',
+        #     'course_name',
+        #     'units',
+        #     'year',
+        #     'sem'
+        # ]
+        exclude = ('id', )
 
 class CourseSlotResource(resources.ModelResource):
     # CDC = fields.Field(
