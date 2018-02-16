@@ -11,9 +11,6 @@ class StudentResource(resources.ModelResource):
         model = Student
         import_id_fields = ['id']
         fields = ['id', 'CAMPUS_ID', 'NAME', 'YEAR', 'DISC']
-        # exclude = ('id', )
-        # skip_unchanged = True
-        # report_skipped = True
 
 
 class CDCResource(resources.ModelResource):
@@ -31,51 +28,36 @@ class CDCResource(resources.ModelResource):
         ]
         exclude = ('id', )
 
+
 class OutputResource(resources.ModelResource):
     class Meta:
         model = Output
-        # import_id_fields = ['comp_codes']
-        # fields = [
-        #     'comp_codes',
-        #     'course_code',
-        #     'tag',
-        #     'course_name',
-        #     'units',
-        #     'year',
-        #     'sem'
-        # ]
+
         exclude = ('id', )
 
-class CourseSlotResource(resources.ModelResource):
-    # CDC = fields.Field(
-    #     column_name='course_id',
-    #     attribute='CDC',
-    #     widget=CompCodesWidget(CDC, 'comp_codes')
-    #     )
 
-    
+class CourseSlotResource(resources.ModelResource):
 
     class Meta:
         model = CourseSlot
 
         import_id_fields = ['class_nbr']
         fields = [
-                  # 'CDC__comp_codes',
-                  'course_id',           
-                  'class_nbr',
-                  'section',
-                  # 'course',
-                  # 'room',
-                  # 'class_pattern',
-                  # 'mtg_start',
-                  # 'end_time',
-                  # 'instructor_ID',
-                  # 'instructor_name',
-                  # 'instructor_role',
-                  # 'exam_tm_cd',
-                  # # 'exam_date',
-                  # 'course_admin',
-                  ]
+            'course_id',
+            'class_nbr',
+            'section', ]
+        # 'CDC__comp_codes',
+        # 'course',
+        # 'room',
+        # 'class_pattern',
+        # 'mtg_start',
+        # 'end_time',
+        # 'instructor_ID',
+        # 'instructor_name',
+        # 'instructor_role',
+        # 'exam_tm_cd',
+        # # 'exam_date',
+        # 'course_admin',
 
     # mtg_start = fields.Field(
     #     column_name="mtg_start",

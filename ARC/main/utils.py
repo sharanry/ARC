@@ -1,3 +1,5 @@
+# Currently not being used
+
 from __future__ import unicode_literals
 
 from decimal import Decimal

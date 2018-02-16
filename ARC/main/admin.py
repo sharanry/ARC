@@ -16,6 +16,12 @@ class StudentAdmin(ImportExportModelAdmin):
     resource_class = StudentResource
     search_fields = ['CAMPUS_ID', "NAME", "YEAR", "DISC"]
     actions = [single_option_CDC,]
+    list_filter = (
+        # for ordinary fields
+        ('YEAR', DropdownFilter),
+        # for related fields
+        ('DISC', DropdownFilter),
+    )
 
 @admin.register(CDC)
 class CDCAdmin(ImportExportModelAdmin):
@@ -37,17 +43,3 @@ class OutputAdmin(ImportExportModelAdmin):
 admin.site.site_header = "Academic Registration & Counselling Division"
 
 admin.site.site_title = "Academic Registration & Counselling Division"
-
-
-
-
-# Filter
-
-class EntityAdmin(ImportExportModelAdmin):
-    ...
-    list_filter = (
-        # for ordinary fields
-        ('a_charfield', DropdownFilter),
-        # for related fields
-        ('a_foreignkey_field', RelatedDropdownFilter),
-    )
