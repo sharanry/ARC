@@ -34,7 +34,7 @@ class CDC(models.Model):
 
 
 class CourseSlot(models.Model):
-    
+
     # CDC = models.ForeignKey(CDC, on_delete=models.PROTECT, null=True)
     course_id = models.CharField(max_length=6, blank=True)
     # subject = models.CharField(max_length=5, null=True)
@@ -43,7 +43,7 @@ class CourseSlot(models.Model):
     section = models.CharField(max_length=2, null=True)
 
     def __str__(self):
-        return "%s %s" % (self.course_id, self.class_nbr)
+        return "%s %s %s %s" % (self.course_id, self.section, self.class_nbr, get_cdc(self.course_id[1:]))
 
      # room = models.CharField(max_length=10, null=True)
 
@@ -66,6 +66,7 @@ class CourseSlot(models.Model):
     # days = models.CharField(max_length=10, choices=DAYS)
     # time_slot = models.CahrField()
 
+
 class Output(models.Model):
     EMPLID = models.CharField(max_length=11, blank=True)
     CAMPUS_ID = models.CharField(max_length=13, null=True)
@@ -78,3 +79,20 @@ class Output(models.Model):
 
     def __str__(self):
         return "%s %s %s %s" % (self.EMPLID, self.CAMPUS_ID, self.DESCR, self.CLASS_SECTION)
+
+
+class Map(models.Model):
+    name = models.CharField(max_length=20)
+    courseSlots = models.ManyToManyField(CourseSlot)
+
+    def __str__(self):
+        return "%s" % (self.name)
+
+# helper functions
+
+
+def get_cdc(comp_code):
+    try:
+        return CDC.objects.get(comp_codes__contains=comp_code).course_name
+    except CDC.DoesNotExist:
+        return None

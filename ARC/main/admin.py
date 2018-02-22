@@ -4,7 +4,7 @@ from .resources import *
 
 # Register your models here.
 
-from main.models import Student, CDC, CourseSlot, Output
+from main.models import Student, CDC, CourseSlot, Output, Map
 
 from django_admin_listfilter_dropdown.filters import DropdownFilter, RelatedDropdownFilter
 
@@ -39,6 +39,10 @@ class OutputAdmin(ImportExportModelAdmin):
     resource_class = OutputResource
     search_fields = ['CAMPUS_ID', 'CATALOG_NBR', 'CLASS_NBR', 'CLASS_SECTION', 'CRSE_ID', 'DESCR', 'EMPLID', 'SUBJECT']
 
+@admin.register(Map)
+class MapAdmin(ImportExportModelAdmin):
+    search_fields = ["name", "courseSlot"]
+    filter_horizontal = ('courseSlots',)
 
 admin.site.site_header = "Academic Registration & Counselling Division"
 

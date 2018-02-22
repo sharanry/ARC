@@ -3,7 +3,7 @@ from import_export.widgets import ForeignKeyWidget
 from .models import Student, CDC, CourseSlot, Output
 
 
-from .utils import TimeWidget, DateWidget, CompCodesWidget
+# from .utils import TimeWidget, DateWidget, CompCodesWidget
 
 
 class StudentResource(resources.ModelResource):
