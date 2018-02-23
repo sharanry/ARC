@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 
 class Student(models.Model):
     """
@@ -15,7 +13,7 @@ class Student(models.Model):
 
     def __str__(self):
         return "%s %s" % (self.CAMPUS_ID, self.NAME)
-# from "CDC File"
+
 
 
 class CDC(models.Model):
@@ -88,9 +86,9 @@ class Map(models.Model):
     def __str__(self):
         return "%s" % (self.name)
 
+
+
 # helper functions
-
-
 def get_cdc(comp_code):
     try:
         return CDC.objects.get(comp_codes__contains=comp_code).course_name

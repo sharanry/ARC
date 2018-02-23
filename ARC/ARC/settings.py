@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'main',
     'import_export',
     'django_admin_listfilter_dropdown',
-    
+
 ]
 
 MIDDLEWARE = [
@@ -60,7 +60,9 @@ ROOT_URLCONF = 'ARC.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, "templates"),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,6 +128,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+
 
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True

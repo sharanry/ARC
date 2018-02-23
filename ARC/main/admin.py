@@ -8,20 +8,25 @@ from main.models import Student, CDC, CourseSlot, Output, Map
 
 from django_admin_listfilter_dropdown.filters import DropdownFilter, RelatedDropdownFilter
 
-from main.actions import single_option_CDC
+from main.actions import single_option_CDC, apply_maps
 
+from django.shortcuts import render
+
+from django.template.response import TemplateResponse
 
 @admin.register(Student)
 class StudentAdmin(ImportExportModelAdmin):
     resource_class = StudentResource
     search_fields = ['CAMPUS_ID', "NAME", "YEAR", "DISC"]
-    actions = [single_option_CDC,]
+    actions = [single_option_CDC, apply_maps]
     list_filter = (
         # for ordinary fields
         ('YEAR', DropdownFilter),
         # for related fields
         ('DISC', DropdownFilter),
     )
+
+
 
 @admin.register(CDC)
 class CDCAdmin(ImportExportModelAdmin):

@@ -1,5 +1,11 @@
 import re
 from main.models import CDC, CourseSlot, Output
+from main.views import map_options
+
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.template.response import TemplateResponse
+from main.forms import MapsForm
 
 
 def single_option_CDC(modeladmin, request, queryset):
@@ -14,13 +20,36 @@ def single_option_CDC(modeladmin, request, queryset):
             # print(CDCs)
             for cdc in CDCs:
                 if check_if_single_option_CDC(str(int(float(cdc.comp_codes)))):
-                    print (CourseSlot.objects.filter(course_id__endswith=str(int(float(cdc.comp_codes)))))
+                    print (CourseSlot.objects.filter(
+                        course_id__endswith=str(int(float(cdc.comp_codes)))))
                     generate_output(cdc.comp_codes, student, cdc)
                 else:
                     print("Not single option")
 
 
 single_option_CDC.short_description = "Generate single option CDC data."
+
+
+def apply_maps(modeladmin, request, queryset):
+    print("BBB")
+    if request.method == 'POST':
+        form = MapsForm(request.POST)
+        # Do something
+        if form.is_valid():
+            maps = form.cleaned_data["Course_Map"]
+        else:
+            print("not valid")
+    else:
+        form = MapsForm()
+
+    context = modeladmin.admin_site.each_context(request)
+    context["form"] = form
+    context['opts'] = modeladmin.model._meta
+
+    return TemplateResponse(request, "maps/map_options.html", context)
+
+
+apply_maps.short_description = "Apple pre-defined maps"
 
 
 def get_branch(CAMPUS_ID):
