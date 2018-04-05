@@ -1,31 +1,53 @@
 import re
 from main.models import CDC, CourseSlot, Output
-from main.views import map_options
+# from main.views import map_options
 
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
-from main.forms import MapsForm
+from main.forms import MapsForm, SingleCDCForm
 
 
 def single_option_CDC(modeladmin, request, queryset):
-    for student in queryset:
-        branches = get_branch(student.CAMPUS_ID)
-        print(branches)
-        year = 2
-        sem = 2
+    
+    if request.method == 'POST':
+        form = SingleCDCForm(request.POST)
+        # Do something
+        if form.is_valid():
+            year = form.cleaned_data["Year"]
+            sem = form.cleaned_data["Sem"]
+            print(year, sem)
 
-        for branch in branches:
-            CDCs = get_cdcs(branch, year, sem)
-            # print(CDCs)
-            for cdc in CDCs:
-                if check_if_single_option_CDC(str(int(float(cdc.comp_codes)))):
-                    print (CourseSlot.objects.filter(
-                        course_id__endswith=str(int(float(cdc.comp_codes)))))
-                    generate_output(cdc.comp_codes, student, cdc)
-                else:
-                    print("Not single option")
+            for student in queryset:
+                branches = get_branch(student.CAMPUS_ID)
+                # print(branches)
 
+            
+            
+                for branch in branches:
+                    CDCs = get_cdcs(branch, year, sem)
+                    # print(CDCs)
+                    for cdc in CDCs:
+                        if check_if_single_option_CDC(str(int(float(cdc.comp_codes)))):
+                            print (CourseSlot.objects.filter(
+                                course_id__endswith=str(int(float(cdc.comp_codes)))))
+                            generate_output(cdc.comp_codes, student, cdc)
+                        else:
+                            print("Not single option")
+                    year=year-1
+
+        else:
+            print("not valid")
+    else:
+        form = SingleCDCForm()
+
+    context = modeladmin.admin_site.each_context(request)
+    context["form"] = form
+    context['opts'] = modeladmin.model._meta
+
+    return TemplateResponse(request, "maps/single_option_CDC_select.html", context)
+
+    
 
 single_option_CDC.short_description = "Generate single option CDC data."
 
@@ -49,7 +71,7 @@ def apply_maps(modeladmin, request, queryset):
     return TemplateResponse(request, "maps/map_options.html", context)
 
 
-apply_maps.short_description = "Apple pre-defined maps"
+apply_maps.short_description = "Apply pre-defined maps"
 
 
 def get_branch(CAMPUS_ID):
@@ -61,6 +83,7 @@ def get_branch(CAMPUS_ID):
 
 
 def get_cdcs(branch, year, sem):
+    print ("get_cdcs")
     return CDC.objects.filter(
         tag=branch + "CDC").filter(year__contains=year).filter(sem__contains=sem)
 
