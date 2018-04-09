@@ -48,14 +48,12 @@ def apply_maps(modeladmin, request, queryset):
 
 apply_maps.short_description = "Apply pre-defined maps"
 
-def apply_maps_logic(queryset):
+def apply_maps_logic(students, maps):
 
-    for student in queryset:
-        COURSES = maps.name.all()
-        for course in COURSES:
-            generate_output(course.courseSlots.comp_codes, student, cdc)
-
-
+    for student in students:
+        for m in maps:
+            for course in m.courseSlots:
+                generate_output_maps(course, student)
 
 def get_branch(CAMPUS_ID):
     branches = []
@@ -112,3 +110,21 @@ def generate_output(comp_codes, student, cdc):
                         CLASS_SECTION=slot.section)
         # print(output)
         output.save()
+
+def generate_output_maps(courseslot, student):
+    # print(123)  # , comp_codes, cdc)
+    # print(comp_codes[:2])
+    # courseslots = get_course_slots(comp_codes)
+    # print(courseslots)
+    # for slot in courseslots:
+        # print(slot)
+    output = Output(EMPLID=student.id,
+                    CAMPUS_ID=student.CAMPUS_ID,
+                    CRSE_ID=int(float(courseslot.course_id[1:])),
+                    SUBJECT=courseslot.subject,
+                    CATALOG_NBR=re.split('\W+', courseslot.catalog)[0],
+                    DESCR=courseslot.course_title,
+                    CLASS_NBR=int(float(courseslot.class_nbr)),
+                    CLASS_SECTION=courseslot.section)
+    # print(output)
+    output.save()
