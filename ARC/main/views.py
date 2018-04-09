@@ -13,11 +13,11 @@ def map_options(request):
         if form.is_valid():
             maps = form.cleaned_data["Course_Map"]
             students = form.cleaned_data["students"]
-            for m in maps:
-                print(m.courseSlots)
-            for s in students:
-                print(s)
-            # apply_maps_logic(students, maps)
+            # for m in maps:
+            #     print(m.courseSlots)
+            # for s in students:
+            #     print(s)
+            apply_maps_logic(students, maps)
         else:
             print("not valid")
         

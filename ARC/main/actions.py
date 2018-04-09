@@ -48,11 +48,17 @@ def apply_maps(modeladmin, request, queryset):
 
 apply_maps.short_description = "Apply pre-defined maps"
 
-def apply_maps_logic(students, maps):
+# def get_maps(maps):
+#     map_names = [map.name]
+#     for val in CourseSlot.objects.all():
+#         if if val in Map.courseSlots.all()
 
+def apply_maps_logic(students, maps):
+    
     for student in students:
-        for m in maps:
-            for course in m.courseSlots:
+        for m in maps.all():
+            print(m)
+            for course in m.courseSlots.all():
                 generate_output_maps(course, student)
 
 def get_branch(CAMPUS_ID):
@@ -126,5 +132,5 @@ def generate_output_maps(courseslot, student):
                     DESCR=courseslot.course_title,
                     CLASS_NBR=int(float(courseslot.class_nbr)),
                     CLASS_SECTION=courseslot.section)
-    # print(output)
+    print(output)
     output.save()
