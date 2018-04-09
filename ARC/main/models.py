@@ -35,34 +35,16 @@ class CourseSlot(models.Model):
 
     # CDC = models.ForeignKey(CDC, on_delete=models.PROTECT, null=True)
     course_id = models.CharField(max_length=6, blank=True)
-    # subject = models.CharField(max_length=5, null=True)
-    # catalog = models.CharField(max_length=4, )
+    subject = models.CharField(max_length=5, null=True)
+    catalog = models.CharField(max_length=4, null=True)
     class_nbr = models.CharField(max_length=4, primary_key=True, blank=True)
     section = models.CharField(max_length=2, null=True)
+    course_title = models.CharField(max_length=40, null=True)
 
     def __str__(self):
         return "%s %s %s %s" % (self.course_id, self.section, self.class_nbr, get_cdc(self.course_id[1:]))
 
-     # room = models.CharField(max_length=10, null=True)
-
-    # Class Pattern
-    # class_pattern = models.CharField(max_length=4, null=True)
-    # TODO: Make more robust
-
-    # mtg_start = models.TimeField(null=True)
-    # end_time = models.TimeField(null=True)
-
-    # instructor_ID = models.CharField(max_length=20, null=True)
-    # instructor_name = models.CharField(max_length=30, null=True)
-    # instructor_role = models.CharField(max_length=2, null=True)
-
-    # exam_tm_cd = models.CharField(max_length=5, null=True)
-    # exam_date = models.DateField(null=True)
-
-    # course_admin = models.CharField(max_length=5, null=True)
-
-    # days = models.CharField(max_length=10, choices=DAYS)
-    # time_slot = models.CahrField()
+    
 
 
 class Output(models.Model):
