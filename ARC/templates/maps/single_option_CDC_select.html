@@ -3,11 +3,9 @@
 
 {% block content %}
 
-
-
 <div id="content-main">
 <h1>In form</h1>
-  <form action="{% url 'views.single_option_CDC_redirect'  %}" method="POST">
+  <form action="/cdcsuccess" method="POST">
     {% csrf_token %}
 
     {% if form.non_field_errors|length > 0 %}
@@ -33,7 +31,7 @@
     </fieldset>
 
     <div class="submit-row">
-      <input type="submit" class="default" method="post" value="Submit"> 
+      <input type="submit" class="default" value="Submit"> 
     </div>
 
   </form>

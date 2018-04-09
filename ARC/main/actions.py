@@ -1,72 +1,48 @@
 import re
-from main.models import CDC, CourseSlot, Output
+from main.models import *
 # from main.views import map_options
 
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template.response import TemplateResponse
 from main.forms import MapsForm, SingleCDCForm
+from django import forms
 
 
 def single_option_CDC(modeladmin, request, queryset):
-    
-    # if request.method == 'POST':
-        # form = SingleCDCForm(request.POST)
-        # if form.is_valid():
-            # year = form.cleaned_data["Year"]
-            # sem = form.cleaned_data["Sem"]
-    # context["year"]=year
-            #return redirect
-        #     print(year, sem)
-        # else:
-        #     print("not valid")
-    # else:
     form = SingleCDCForm()
-
+    form.fields["students"].initial=queryset
     context = modeladmin.admin_site.each_context(request)
-    context["students"]=queryset
     context["form"] = form
     context['opts'] = modeladmin.model._meta
     return TemplateResponse(request, "maps/single_option_CDC_select.html", context)
 
 
-
 single_option_CDC.short_description = "Generate single option CDC data."
 
-def single_option_CDC_logic(queryset):
-    for student in queryset:
-            branches = get_branch(student.CAMPUS_ID) 
-            for branch in branches:
-                CDCs = get_cdcs(branch, year, sem)
-                for cdc in CDCs:
-                    if check_if_single_option_CDC(str(int(float(cdc.comp_codes)))):
-                        # print (CourseSlot.objects.filter(
-                        #     course_id__endswith=str(int(float(cdc.comp_codes)))))
-                        generate_output(cdc.comp_codes, student, cdc)
-                    # else:
-                    #     print("Not single option")
-                year=year-1
+def single_option_CDC_logic(students, year, sem):
+    
+    for student in students:
+        # i=i+1
+        stuYear = year
+        # print(student.CAMPUS_ID)
+        branches = get_branch(student.CAMPUS_ID) 
+        # print(branches)
+        for branch in branches:
+            CDCs = get_cdcs(branch, stuYear, sem)
+            # print(CDCs)
+            for cdc in CDCs:
+                if check_if_single_option_CDC(str(int(float(cdc.comp_codes)))):
+                    generate_output(cdc.comp_codes, student, cdc)
+            stuYear -= 1
 
 
 def apply_maps(modeladmin, request, queryset):
-    if request.method == 'POST':
-        form = MapsForm(request.POST)
-        # Do something
-        if form.is_valid():
-            print("maps")
-            maps = form.cleaned_data["Course_Map"]
-            context["maps"]=maps
-            context["students"]=queryset
-            #return redirect
-
-        else:
-            print("not valid")
-    else:
-        form = MapsForm()
-
+    form = MapsForm()
+    form.fields["students"].initial = queryset
+    context = modeladmin.admin_site.each_context(request)
     context["form"] = form
     context['opts'] = modeladmin.model._meta
-    context = modeladmin.admin_site.each_context(request)
     return TemplateResponse(request, "maps/map_options.html", context)
 
 
@@ -92,7 +68,7 @@ def get_branch(CAMPUS_ID):
 def get_cdcs(branch, year, sem):
     print ("get_cdcs")
     return CDC.objects.filter(
-        tag=branch + "CDC").filter(year__contains=year).filter(sem__contains=sem)
+        tag=branch + "CDC").filter(year__icontains=year).filter(sem__icontains=sem)
 
 
 def check_if_single_option_CDC(comp_codes):
@@ -101,15 +77,14 @@ def check_if_single_option_CDC(comp_codes):
     # course_slots = get_course_slots(comp_codes)
 
     nP = len(CourseSlot.objects.filter(
-        course_id__contains=comp_codes).filter(section__startswith="P"))
+        course_id__icontains=comp_codes).filter(section__startswith="P"))
     nL = len(CourseSlot.objects.filter(
-        course_id__contains=comp_codes).filter(section__startswith="L"))
+        course_id__icontains=comp_codes).filter(section__startswith="L"))
     nG = len(CourseSlot.objects.filter(
-        course_id__contains=comp_codes).filter(section__startswith="G"))
+        course_id__icontains=comp_codes).filter(section__startswith="G"))
 
     print(nP, nL, nG)
     if nP <= 1 and nL <= 1 and nG <= 1:
-
         return True
 
     return False
@@ -122,9 +97,9 @@ def get_course_slots(comp_codes):
 
 def generate_output(comp_codes, student, cdc):
     # print(123)  # , comp_codes, cdc)
-    print(comp_codes[:2])
+    # print(comp_codes[:2])
     courseslots = get_course_slots(comp_codes)
-    print(courseslots)
+    # print(courseslots)
     for slot in courseslots:
         # print(slot)
         output = Output(EMPLID=student.id,
@@ -135,5 +110,5 @@ def generate_output(comp_codes, student, cdc):
                         DESCR=cdc.course_name,
                         CLASS_NBR=int(float(slot.class_nbr)),
                         CLASS_SECTION=slot.section)
-        print(output)
+        # print(output)
         output.save()

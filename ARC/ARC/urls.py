@@ -16,12 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from main import views, actions
-from main.views import single_option_CDC_redirect
+# from main.views import single_option_CDC_redirect
 
 
 urlpatterns = [
+    path('mapsuccess', views.map_options),
     path('', admin.site.urls), 
-	path('/singleoptionsuccess', single_option_CDC_redirect), 
-
+	path('cdcsuccess', views.single_option_CDC_redirect),
 
 ]
+# urlpatterns += patterns('myview.views',
+#     url(r'^(?P<user>\w+)/', 'myview', name='myurl'), # I can't think of a better name
+# )

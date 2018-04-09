@@ -86,7 +86,12 @@ class Map(models.Model):
     def __str__(self):
         return "%s" % (self.name)
 
+# class Students(models.Model):
+#     # name = models.CharField(max_length=20)
+#     students = models.ManyToManyField(Student)
 
+#     def __str__(self):
+#         return "%s" % (self.name)
 
 # helper functions
 def get_cdc(comp_code):
