@@ -15,9 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from main import views
+from main import views, actions
+from main.views import single_option_CDC_redirect
+
 
 urlpatterns = [
-    path('', admin.site.urls),
+    path('', admin.site.urls), 
+	path('/singleoptionsuccess', single_option_CDC_redirect), 
+
 
 ]

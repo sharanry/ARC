@@ -10,68 +10,75 @@ from main.forms import MapsForm, SingleCDCForm
 
 def single_option_CDC(modeladmin, request, queryset):
     
-    if request.method == 'POST':
-        form = SingleCDCForm(request.POST)
-        # Do something
-        if form.is_valid():
-            year = form.cleaned_data["Year"]
-            sem = form.cleaned_data["Sem"]
-            print(year, sem)
-
-            for student in queryset:
-                branches = get_branch(student.CAMPUS_ID)
-                # print(branches)
-
-            
-            
-                for branch in branches:
-                    CDCs = get_cdcs(branch, year, sem)
-                    # print(CDCs)
-                    for cdc in CDCs:
-                        if check_if_single_option_CDC(str(int(float(cdc.comp_codes)))):
-                            print (CourseSlot.objects.filter(
-                                course_id__endswith=str(int(float(cdc.comp_codes)))))
-                            generate_output(cdc.comp_codes, student, cdc)
-                        else:
-                            print("Not single option")
-                    year=year-1
-
-        else:
-            print("not valid")
-    else:
-        form = SingleCDCForm()
+    # if request.method == 'POST':
+        # form = SingleCDCForm(request.POST)
+        # if form.is_valid():
+            # year = form.cleaned_data["Year"]
+            # sem = form.cleaned_data["Sem"]
+    # context["year"]=year
+            #return redirect
+        #     print(year, sem)
+        # else:
+        #     print("not valid")
+    # else:
+    form = SingleCDCForm()
 
     context = modeladmin.admin_site.each_context(request)
+    context["students"]=queryset
     context["form"] = form
     context['opts'] = modeladmin.model._meta
-
     return TemplateResponse(request, "maps/single_option_CDC_select.html", context)
 
-    
+
 
 single_option_CDC.short_description = "Generate single option CDC data."
 
+def single_option_CDC_logic(queryset):
+    for student in queryset:
+            branches = get_branch(student.CAMPUS_ID) 
+            for branch in branches:
+                CDCs = get_cdcs(branch, year, sem)
+                for cdc in CDCs:
+                    if check_if_single_option_CDC(str(int(float(cdc.comp_codes)))):
+                        # print (CourseSlot.objects.filter(
+                        #     course_id__endswith=str(int(float(cdc.comp_codes)))))
+                        generate_output(cdc.comp_codes, student, cdc)
+                    # else:
+                    #     print("Not single option")
+                year=year-1
+
 
 def apply_maps(modeladmin, request, queryset):
-    print("BBB")
     if request.method == 'POST':
         form = MapsForm(request.POST)
         # Do something
         if form.is_valid():
+            print("maps")
             maps = form.cleaned_data["Course_Map"]
+            context["maps"]=maps
+            context["students"]=queryset
+            #return redirect
+
         else:
             print("not valid")
     else:
         form = MapsForm()
 
-    context = modeladmin.admin_site.each_context(request)
     context["form"] = form
     context['opts'] = modeladmin.model._meta
-
+    context = modeladmin.admin_site.each_context(request)
     return TemplateResponse(request, "maps/map_options.html", context)
 
 
 apply_maps.short_description = "Apply pre-defined maps"
+
+def apply_maps_logic(queryset):
+
+    for student in queryset:
+        COURSES = maps.name.all()
+        for course in COURSES:
+            generate_output(course.courseSlots.comp_codes, student, cdc)
+
 
 
 def get_branch(CAMPUS_ID):
