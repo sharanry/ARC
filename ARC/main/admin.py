@@ -4,7 +4,7 @@ from .resources import *
 
 # Register your models here.
 
-from main.models import Student, CDC, CourseSlot, Output, Map
+from main.models import *
 
 from django_admin_listfilter_dropdown.filters import DropdownFilter, RelatedDropdownFilter
 
